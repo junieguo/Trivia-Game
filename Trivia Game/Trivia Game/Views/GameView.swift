@@ -8,43 +8,36 @@
 import SwiftUI
 
 struct GameView: View {
-    @Binding var highscore: Int
-    @State private var currentQuestionIndex = 0
-    @State private var score = 0
-    @State private var isGameOver = false
-    @State private var questions: [Question]
+    @StateObject var viewModel = QuizViewModel() // ViewModel instance
+    @Binding var highscore: Int // Binding to update highscore
     
-    init(highscore: Binding<Int>) {
-        self._highscore = highscore
-        self._questions = State(initialValue: [
-            Question(text: "Test question", answers: ["1", "2", "3", "4"], correctAnswer: "4"),
-            Question(text: "Test question", answers: ["1", "2", "3", "4"], correctAnswer: "3")
-        ])
-    }
-
     var body: some View {
         VStack {
-            if isGameOver {
+            if viewModel.isGameOver {
                 VStack {
                     Text("Game Over")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding()
                     
-                    Text("Your Score: \(score)")
+                    Text("Your Score: \(viewModel.score)")
                         .font(.title)
                     
-                    if score > highscore {
+                    // Update the highscore when score is greater than current highscore
+                    if viewModel.score > highscore {
                         Text("New Highscore!")
                             .foregroundColor(.green)
                             .font(.headline)
                             .padding()
-                        // Will update highscore if the player beat it
                     }
                     
                     // Button to reset game
                     Button(action: {
-                        resetGame()
+                        // Update the highscore after game over
+                        if viewModel.score > highscore {
+                            highscore = viewModel.score // Update the highscore in the parent view
+                        }
+                        viewModel.resetGame() // Reset the game
                     }) {
                         Text("Restart Game")
                             .font(.title)
@@ -56,16 +49,16 @@ struct GameView: View {
                     .padding()
                     
                     NavigationLink("Back to Home", destination: WelcomeView())
-                        .padding()
+                        .padding() //bug, resets high score
                 }
             } else {
                 VStack {
-                    Text(questions[currentQuestionIndex].text)
+                    Text(viewModel.questions[viewModel.currentQuestionIndex].text)
                         .font(.title2)
                         .padding()
 
                     // Display question image if available
-                    if let imageName = questions[currentQuestionIndex].imageName {
+                    if let imageName = viewModel.questions[viewModel.currentQuestionIndex].imageName {
                         Image(imageName)
                             .resizable()
                             .scaledToFit()
@@ -74,9 +67,9 @@ struct GameView: View {
                     }
 
                     // List of answer options as buttons
-                    ForEach(questions[currentQuestionIndex].answers, id: \.self) { answer in
+                    ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
                         Button(action: {
-                            checkAnswer(selectedAnswer: answer)
+                            viewModel.checkAnswer(selectedAnswer: answer)
                         }) {
                             Text(answer)
                                 .font(.title)
@@ -88,7 +81,7 @@ struct GameView: View {
                         }
                     }
 
-                    Text("Score: \(score)")
+                    Text("Score: \(viewModel.score)")
                         .font(.headline)
                         .padding()
                 }
@@ -97,29 +90,4 @@ struct GameView: View {
         .padding()
         .navigationBarTitle("Trivia Game", displayMode: .inline)
     }
-    
-    // Check the answer and update score
-    private func checkAnswer(selectedAnswer: String) {
-        if selectedAnswer == questions[currentQuestionIndex].correctAnswer {
-            score += 1
-        }
-        moveToNextQuestion()
-    }
-
-    // Move to the next question
-    private func moveToNextQuestion() {
-        if currentQuestionIndex + 1 < questions.count {
-            currentQuestionIndex += 1
-        } else {
-            isGameOver = true
-        }
-    }
-
-    // Reset the game
-    private func resetGame() {
-            score = 0
-            currentQuestionIndex = 0
-            isGameOver = false
-        }
 }
-
