@@ -65,6 +65,12 @@ struct GameView: View {
                             .frame(height: 200)
                             .padding()
                     }
+                    
+                    // Display Timer
+                    Text("Time Remaining: \(viewModel.timeRemaining)")
+                        .font(.headline)
+                        .padding()
+                                        
 
                     // List of answer options as buttons
                     ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
@@ -89,5 +95,11 @@ struct GameView: View {
         }
         .padding()
         .navigationBarTitle("Trivia Game", displayMode: .inline)
+        .onAppear {
+            viewModel.startTimer() // Start the timer when the view appears
+        }
+        .onDisappear {
+            viewModel.stopTimer() // Stop timer when the view disappears
+        }
     }
 }
