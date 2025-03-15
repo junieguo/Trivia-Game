@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		8228C8C62D83B19100D2FCCD /* Trivia Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Trivia Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8228C8C62D83B19100D2FCCD /* Trivia Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Trivia Game.app"; path = "/Users/junieguo/Documents/Trivia-Game/Trivia Game/build/Debug-iphoneos/Trivia Game.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,16 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				8228C8C82D83B19100D2FCCD /* Trivia Game */,
-				8228C8C72D83B19100D2FCCD /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		8228C8C72D83B19100D2FCCD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8228C8C62D83B19100D2FCCD /* Trivia Game.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,7 +86,7 @@
 			mainGroup = 8228C8BD2D83B19100D2FCCD;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 8228C8C72D83B19100D2FCCD /* Products */;
+			productRefGroup = 8228C8BD2D83B19100D2FCCD;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
