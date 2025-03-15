@@ -18,6 +18,7 @@ struct GameView: View {
         self._highscore = highscore
         self._questions = State(initialValue: [
             Question(text: "Test question", answers: ["1", "2", "3", "4"], correctAnswer: "4"),
+            Question(text: "Test question", answers: ["1", "2", "3", "4"], correctAnswer: "3")
         ])
     }
 
@@ -41,7 +42,18 @@ struct GameView: View {
                         // Will update highscore if the player beat it
                     }
                     
-                    // Add button to reset game
+                    // Button to reset game
+                    Button(action: {
+                        resetGame()
+                    }) {
+                        Text("Restart Game")
+                            .font(.title)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.green)
+                            .cornerRadius(10)
+                    }
+                    .padding()
                     
                     NavigationLink("Back to Home", destination: WelcomeView())
                         .padding()
@@ -104,5 +116,10 @@ struct GameView: View {
     }
 
     // Reset the game
+    private func resetGame() {
+            score = 0
+            currentQuestionIndex = 0
+            isGameOver = false
+        }
 }
 
