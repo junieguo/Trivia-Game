@@ -13,12 +13,5 @@ struct Question: Identifiable {
     var imageName: String? // Optional image name associated with the question
     var answers: [String] // The possible answers
     var correctAnswer: String // The correct answer
-    
-    init(text: String, imageName: String? = nil, answers: [String], correctAnswer: String) {
-        self.text = text
-        self.imageName = imageName
-        self.answers = answers
-        self.correctAnswer = correctAnswer
-    }
 }
 
