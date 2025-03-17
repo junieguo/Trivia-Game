@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @State private var isGameStarted = false
-    @State private var highscore = 0 // Placeholder for highscore
+    @EnvironmentObject var gameState: GameState // Access the global game state
 
     var body: some View {
         NavigationStack {
@@ -23,11 +22,11 @@ struct WelcomeView: View {
                     .font(.title2)
                     .padding()
 
-                Text("Highscore: \(highscore)")
+                Text("Highscore: \(gameState.highscore)")
                     .font(.headline)
                     .padding()
 
-                NavigationLink(destination: GameView(highscore: $highscore)) {
+                NavigationLink(destination: GameView()) {
                     Text("Start Quiz")
                         .font(.title)
                         .foregroundColor(.white)
@@ -36,14 +35,8 @@ struct WelcomeView: View {
                         .cornerRadius(10)
                 }
                 .padding()
-
             }
             .navigationBarTitle("Trivia Game", displayMode: .inline)
         }
     }
 }
-
-#Preview {
-    WelcomeView()
-}
-

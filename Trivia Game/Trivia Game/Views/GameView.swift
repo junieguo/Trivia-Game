@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GameView: View {
     @StateObject var viewModel = QuizViewModel() // ViewModel instance
-    @Binding var highscore: Int // Binding to update highscore
-    
+    @EnvironmentObject var gameState: GameState // Access the global game state
+
     var body: some View {
         VStack {
             if viewModel.isGameOver {
@@ -24,7 +24,7 @@ struct GameView: View {
                         .font(.title)
                     
                     // Update the highscore when score is greater than current highscore
-                    if viewModel.score > highscore {
+                    if viewModel.score > gameState.highscore {
                         Text("New Highscore!")
                             .foregroundColor(.green)
                             .font(.headline)
@@ -34,8 +34,8 @@ struct GameView: View {
                     // Button to reset game
                     Button(action: {
                         // Update the highscore after game over
-                        if viewModel.score > highscore {
-                            highscore = viewModel.score // Update the highscore in the parent view
+                        if viewModel.score > gameState.highscore {
+                            gameState.highscore = viewModel.score // Update global highscore
                         }
                         viewModel.resetGame() // Reset the game
                     }) {
@@ -49,7 +49,7 @@ struct GameView: View {
                     .padding()
                     
                     NavigationLink("Back to Home", destination: WelcomeView())
-                        .padding() //bug, resets high score
+                        .padding()
                 }
             } else {
                 VStack {
@@ -70,7 +70,6 @@ struct GameView: View {
                     Text("Time Remaining: \(viewModel.timeRemaining)")
                         .font(.headline)
                         .padding()
-                                        
 
                     // List of answer options as buttons
                     ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
