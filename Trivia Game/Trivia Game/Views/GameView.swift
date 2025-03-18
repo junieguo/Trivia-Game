@@ -60,9 +60,35 @@ struct GameView: View {
                     Spacer()
                 }
                 .zIndex(1)
+                
+                HStack {
+                    Spacer()
+                    VStack {
+                        Spacer()
+                        NavigationLink(
+                            destination: WelcomeView(),
+                            label: {
+                                Image(systemName: "house.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40, height: 40)
+                                    .font(.title)
+                                    .foregroundColor(.blue)
+                            }
+                            
+                        )
+                        .navigationBarHidden(true)
+                        .navigationBarBackButtonHidden(true)
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 20)
+                    }
+                    .padding(.leading, 20)
+                }
             }
             .onAppear {
-                viewModel.startTimer()
+                if !viewModel.isGameOver {
+                    viewModel.startTimer()
+                }
             }
             .onDisappear {
                 viewModel.stopTimer()

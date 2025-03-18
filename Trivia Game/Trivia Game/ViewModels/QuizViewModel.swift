@@ -35,6 +35,7 @@ class QuizViewModel: ObservableObject {
 
     // Start the timer
     func startTimer() {
+        stopTimer()
         timeRemaining = 10
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             guard let self = self else { return }
