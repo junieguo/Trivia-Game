@@ -15,37 +15,8 @@ struct GameView: View {
     var body: some View {
         VStack {
             if viewModel.isGameOver {
-                VStack {
-                    Text("Game Over")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding()
-                    
-                    Text("Your Score: \(viewModel.score)")
-                        .font(.title)
-                    
-                    if viewModel.isNewHighScore {
-                        Text("New High Score!")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(.orange)
-                            .padding()
-                    }
-                    
-                    Button(action: {
-                        viewModel.resetGame()
-                    }) {
-                        Text("Restart Game")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.green)
-                            .cornerRadius(10)
-                    }
-                    .padding()
-                    
-                    NavigationLink("Back to Home", destination: WelcomeView())
-                        .padding()
+                GameOverView(score: viewModel.score, isNewHighScore: viewModel.isNewHighScore) {
+                    viewModel.resetGame()
                 }
             } else {
                 VStack {
