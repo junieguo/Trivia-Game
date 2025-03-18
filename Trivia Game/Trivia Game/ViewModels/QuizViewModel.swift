@@ -82,7 +82,10 @@ class QuizViewModel: ObservableObject {
         score = 0
         currentQuestionIndex = 0
         isGameOver = false
-        isNewHighScore = false // Reset flag
+        isNewHighScore = false
+        timeRemaining = 10
+        loadQuestions()
         startTimer()
     }
+
 }

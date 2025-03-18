@@ -13,56 +13,76 @@ struct GameView: View {
     }
 
     var body: some View {
-        VStack {
-            if viewModel.isGameOver {
-                GameOverView(score: viewModel.score, isNewHighScore: viewModel.isNewHighScore) {
-                    viewModel.resetGame()
-                }
-            } else {
+        NavigationView {
+            ZStack {
                 VStack {
-                    Text(viewModel.questions[viewModel.currentQuestionIndex].text)
-                        .font(.title2)
-                        .padding()
-
-                    if let imageName = viewModel.questions[viewModel.currentQuestionIndex].imageName {
-                        Image(imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
+                    VStack {
+                        Text(viewModel.questions[viewModel.currentQuestionIndex].text)
+                            .font(.title2)
                             .padding()
-                    }
 
-                    Text("Time Remaining: \(viewModel.timeRemaining)")
-                        .font(.headline)
-                        .padding()
-
-                    ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
-                        Button(action: {
-                            viewModel.checkAnswer(selectedAnswer: answer)
-                        }) {
-                            Text(answer)
-                                .font(.title)
+                        if let imageName = viewModel.questions[viewModel.currentQuestionIndex].imageName {
+                            Image(imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 200)
                                 .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .padding(5)
+                        }
+
+                        ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
+                            Button(action: {
+                                viewModel.checkAnswer(selectedAnswer: answer)
+                            }) {
+                                Text(answer)
+                                    .font(.title)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .padding(5)
+                            }
                         }
                     }
-
-                    Text("Score: \(viewModel.score)")
-                        .font(.headline)
-                        .padding()
+                    .padding(.top, 50)
                 }
+
+                VStack {
+                    HStack {
+                        Text("Time Remaining: \(viewModel.timeRemaining)")
+                            .font(.headline)
+                            .padding()
+                        Spacer()
+                        Text("Score: \(viewModel.score)")
+                            .font(.headline)
+                            .padding()
+                    }
+                    .padding(.top)
+                    Spacer()
+                }
+                .zIndex(1)
             }
+            .onAppear {
+                viewModel.startTimer()
+            }
+            .onDisappear {
+                viewModel.stopTimer()
+            }
+            .background(
+                NavigationLink(
+                    destination: GameOverView(score: viewModel.score, isNewHighScore: viewModel.isNewHighScore)
+                        .environmentObject(viewModel.gameState),
+                    isActive: $viewModel.isGameOver
+                )  {
+                    EmptyView()
+                }
+            )
         }
-        .padding()
-        .navigationBarTitle("Trivia Game", displayMode: .inline)
-        .onAppear {
-            viewModel.startTimer()
-        }
-        .onDisappear {
-            viewModel.stopTimer()
-        }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
+}
+
+#Preview {
+    GameView(gameState: GameState())
+        .environmentObject(GameState())
 }

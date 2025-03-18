@@ -65,6 +65,8 @@ struct WelcomeView: View {
                 }
                 .padding()
             }
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
             .sheet(isPresented: $showInstructions) {
                 VStack {
                     Text("Instructions")
