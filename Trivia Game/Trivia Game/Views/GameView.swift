@@ -2,14 +2,15 @@
 //  GameView.swift
 //  Trivia Game
 //
-//  Created by Junie Guo on 3/14/25.
-//
 
 import SwiftUI
 
 struct GameView: View {
-    @StateObject var viewModel = QuizViewModel() // ViewModel instance
-    @EnvironmentObject var gameState: GameState // Access the global game state
+    @StateObject var viewModel: QuizViewModel
+
+    init(gameState: GameState) {
+        _viewModel = StateObject(wrappedValue: QuizViewModel(gameState: gameState))
+    }
 
     var body: some View {
         VStack {
@@ -23,21 +24,16 @@ struct GameView: View {
                     Text("Your Score: \(viewModel.score)")
                         .font(.title)
                     
-                    // Update the highscore when score is greater than current highscore
-                    if viewModel.score > gameState.highscore {
-                        Text("New Highscore!")
-                            .foregroundColor(.green)
-                            .font(.headline)
+                    if viewModel.isNewHighScore {
+                        Text("New High Score!")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.orange)
                             .padding()
                     }
                     
-                    // Button to reset game
                     Button(action: {
-                        // Update the highscore after game over
-                        if viewModel.score > gameState.highscore {
-                            gameState.highscore = viewModel.score // Update global highscore
-                        }
-                        viewModel.resetGame() // Reset the game
+                        viewModel.resetGame()
                     }) {
                         Text("Restart Game")
                             .font(.title)
@@ -57,7 +53,6 @@ struct GameView: View {
                         .font(.title2)
                         .padding()
 
-                    // Display question image if available
                     if let imageName = viewModel.questions[viewModel.currentQuestionIndex].imageName {
                         Image(imageName)
                             .resizable()
@@ -65,13 +60,11 @@ struct GameView: View {
                             .frame(height: 200)
                             .padding()
                     }
-                    
-                    // Display Timer
+
                     Text("Time Remaining: \(viewModel.timeRemaining)")
                         .font(.headline)
                         .padding()
 
-                    // List of answer options as buttons
                     ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
                         Button(action: {
                             viewModel.checkAnswer(selectedAnswer: answer)
@@ -95,10 +88,10 @@ struct GameView: View {
         .padding()
         .navigationBarTitle("Trivia Game", displayMode: .inline)
         .onAppear {
-            viewModel.startTimer() // Start the timer when the view appears
+            viewModel.startTimer()
         }
         .onDisappear {
-            viewModel.stopTimer() // Stop timer when the view disappears
+            viewModel.stopTimer()
         }
     }
 }

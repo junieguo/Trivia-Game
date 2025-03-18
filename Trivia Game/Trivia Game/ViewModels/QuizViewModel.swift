@@ -2,8 +2,6 @@
 //  QuizViewModel.swift
 //  Trivia Game
 //
-//  Created by Junie Guo on 3/14/25.
-//
 
 import Foundation
 import SwiftUI
@@ -11,26 +9,24 @@ import Combine
 
 class QuizViewModel: ObservableObject {
     // MARK: - Properties
-    @Published var questions: [Question] = [] // Array to store questions
-    @Published var currentQuestionIndex: Int = 0 // Index of the current question
-    @Published var score: Int = 0 // The user's score
-    @Published var highscore: Int = 0 // The user's highscore
-    @Published var isGameOver: Bool = false // Flag to check if the game is over
-    @Published var timeRemaining: Int = 10 // Time remaining for each question
-    @Published var timerRunning: Bool = false // To track if the timer is running
+    @Published var questions: [Question] = []
+    @Published var currentQuestionIndex: Int = 0
+    @Published var score: Int = 0
+    @Published var isGameOver: Bool = false
+    @Published var timeRemaining: Int = 10
+    @Published var isNewHighScore: Bool = false // Track if new high score is achieved
 
-    private var timer: Timer? // Timer for the countdown
-    private var timerSubscription: AnyCancellable? // To handle the timer subscription
+    var gameState: GameState
+    private var timer: Timer?
 
     // MARK: - Initialization
-    init() {
-        loadQuestions() // Call to load questions into the array
+    init(gameState: GameState) {
+        self.gameState = gameState
+        loadQuestions()
     }
 
     // MARK: - Methods
-
     func loadQuestions() {
-        // Hardcoded questions
         self.questions = [
             Question(text: "Test question", answers: ["1", "2", "3", "4"], correctAnswer: "4"),
             Question(text: "Test question", answers: ["4", "3", "2", "1"], correctAnswer: "3")
@@ -39,14 +35,13 @@ class QuizViewModel: ObservableObject {
 
     // Start the timer
     func startTimer() {
-        timeRemaining = 10 // Reset the time for each question
-        timerRunning = true
+        timeRemaining = 10
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             if self.timeRemaining > 0 {
                 self.timeRemaining -= 1
             } else {
-                self.moveToNextQuestion() // Move to the next question when time runs out
+                self.moveToNextQuestion()
             }
         }
     }
@@ -54,7 +49,6 @@ class QuizViewModel: ObservableObject {
     // Stop the timer
     func stopTimer() {
         timer?.invalidate()
-        timerRunning = false
     }
 
     func checkAnswer(selectedAnswer: String) {
@@ -67,7 +61,7 @@ class QuizViewModel: ObservableObject {
     func moveToNextQuestion() {
         if currentQuestionIndex + 1 < questions.count {
             currentQuestionIndex += 1
-            startTimer() // Restart timer for the next question
+            startTimer()
         } else {
             isGameOver = true
             updateHighscore()
@@ -76,8 +70,11 @@ class QuizViewModel: ObservableObject {
     }
 
     func updateHighscore() {
-        if score > highscore {
-            highscore = score
+        if score > gameState.highscore {
+            gameState.highscore = score
+            isNewHighScore = true // Set flag to true
+        } else {
+            isNewHighScore = false
         }
     }
 
@@ -85,6 +82,7 @@ class QuizViewModel: ObservableObject {
         score = 0
         currentQuestionIndex = 0
         isGameOver = false
-        startTimer() // Restart timer for the first question
+        isNewHighScore = false // Reset flag
+        startTimer()
     }
 }

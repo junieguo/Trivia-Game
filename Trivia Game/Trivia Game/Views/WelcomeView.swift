@@ -2,8 +2,6 @@
 //  WelcomeView.swift
 //  Trivia Game
 //
-//  Created by Junie Guo on 3/14/25.
-//
 
 import SwiftUI
 
@@ -26,7 +24,7 @@ struct WelcomeView: View {
                     .font(.headline)
                     .padding()
 
-                NavigationLink(destination: GameView()) {
+                NavigationLink(destination: GameView(gameState: gameState)) {
                     Text("Start Quiz")
                         .font(.title)
                         .foregroundColor(.white)
