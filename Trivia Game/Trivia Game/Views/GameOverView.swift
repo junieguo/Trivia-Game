@@ -17,6 +17,7 @@ struct GameOverView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding()
+                    .foregroundColor(.red)
                 
                 Text("Your Score: \(score)")
                     .font(.title)

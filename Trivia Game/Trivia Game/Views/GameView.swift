@@ -21,13 +21,12 @@ struct GameView: View {
                             .font(.title2)
                             .padding()
 
-                        if let imageName = viewModel.questions[viewModel.currentQuestionIndex].imageName {
-                            Image(imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 200)
-                                .padding()
-                        }
+                        let imageName = viewModel.questions[viewModel.currentQuestionIndex].imageName
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 180)
+                            .padding()
 
                         ForEach(viewModel.questions[viewModel.currentQuestionIndex].answers, id: \.self) { answer in
                             Button(action: {
@@ -36,6 +35,7 @@ struct GameView: View {
                                 Text(answer)
                                     .font(.title)
                                     .padding()
+                                    .frame(maxWidth: 250)
                                     .background(Color.blue)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
@@ -51,6 +51,7 @@ struct GameView: View {
                         Text("Time Remaining: \(viewModel.timeRemaining)")
                             .font(.headline)
                             .padding()
+                            .foregroundColor(viewModel.timeRemaining <= 3 ? .red : .black)
                         Spacer()
                         Text("Score: \(viewModel.score)")
                             .font(.headline)

@@ -28,9 +28,18 @@ class QuizViewModel: ObservableObject {
     // MARK: - Methods
     func loadQuestions() {
         self.questions = [
-            Question(text: "Test question", answers: ["1", "2", "3", "4"], correctAnswer: "4"),
-            Question(text: "Test question", answers: ["4", "3", "2", "1"], correctAnswer: "3")
+            Question(text: "What is the symbol for the Euro?", imageName: "Euro", answers: ["£", "€", "¥", "₹"], correctAnswer: "€"),
+            Question(text: "The 'Baht' is the currency of which country?", imageName: "Baht", answers: ["Thailand", "Laos", "Myanmar", "Cambodia"], correctAnswer: "Thailand"),
+            Question(text: "Which country uses the 'Sol' as its currency?", imageName: "Sol", answers: ["Peru", "Ecuador", "Chile", "Colombia"], correctAnswer: "Peru"),
+            Question(text: "Which country uses the 'Kwanza' as its official currency?", imageName: "Kwanza", answers: ["Angola", "Mozambique", "Ghana", "Zambia"], correctAnswer: "Angola"),
+            Question(text: "Which of these countries does not use the Euro despite being part of the European Union?", imageName: "EuropeanUnion", answers: ["Germany", "Austria", "Sweden", "Portugal"], correctAnswer: "Sweden"),
+            Question(text: "Which of these countries’ official currency is called 'Pound,' but it is not the British Pound?", imageName: "Pound", answers: ["Egypt", "United Kingdom", "South Africa", "Jordan"], correctAnswer: "Egypt"),
+            Question(text: "Which country uses the 'Rupee,' but the currency’s value is among the highest in the world?", imageName: "Rupee", answers: ["India", "Pakistan", "Sri Lanka", "Seychelles"], correctAnswer: "Seychelles"),
+            Question(text: "What is the world’s oldest still-existing currency?", imageName: "OldCurrencies", answers: ["Chinese Yuan", "British Pound", "Japanese Yen", "Swiss Franc"], correctAnswer: "British Pound"),
+            Question(text: "What is the most widely-used currency in the world?", imageName: "CommonCurrencies", answers: ["Euro", "Chinese Yuan", "US Dollar", "Japanese Yen"], correctAnswer: "US Dollar"),
+            Question(text: "Which of the following countries does not use the Peso as its currency?", imageName: "Peso", answers: ["Mexico", "Argentina", "Chile", "Brazil"], correctAnswer: "Brazil")
         ]
+        self.questions.shuffle()
     }
 
     // Start the timer
