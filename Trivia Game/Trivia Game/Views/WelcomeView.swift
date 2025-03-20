@@ -10,7 +10,7 @@ struct WelcomeView: View {
     @State private var showInstructions = false
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $gameState.navigationPath) {
             VStack(spacing: 20) {
                 
                 Text("World Currency Trivia")
@@ -41,7 +41,9 @@ struct WelcomeView: View {
                 .padding(.horizontal)
                 
                 HStack {
-                    NavigationLink(destination: GameView(gameState: gameState)) {
+                    Button(action: {
+                        gameState.goToGame()
+                    }) {
                         Text("Start Quiz")
                             .font(.title2)
                             .fontWeight(.bold)
@@ -67,31 +69,42 @@ struct WelcomeView: View {
             }
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
-            .sheet(isPresented: $showInstructions) {
-                VStack {
-                    Text("Instructions")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding()
-
-                    Text("In this trivia game, you will be asked questions related to world currencies. Choose the correct answer from multiple choices before time runs out. Each correctly answered questions adds a point to the score. Try to get the highest score possible!")
-                        .font(.body)
-                        
-
-                    Button(action: {
-                        showInstructions = false
-                    }) {
-                        Text("Close")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
-                    .padding()
+            .navigationDestination(for: String.self) { value in
+                if value == "GameView" {
+                    GameView(gameState: gameState)
                 }
-                .padding()
+            }
+            .sheet(isPresented: $showInstructions) {
+                InstructionsView(showInstructions: $showInstructions)
             }
         }
     }
 }
+
+struct InstructionsView: View {
+    @Binding var showInstructions: Bool
+
+    var body: some View {
+        VStack {
+            Text("Instructions")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+
+            Text("In this trivia game, you will be asked questions related to world currencies. Choose the correct answer from multiple choices before time runs out. Each correctly answered question adds a point to the score. Try to get the highest score possible!")
+                .font(.body)
+                .padding()
+
+            Button("Close") {
+                showInstructions = false
+            }
+            .font(.title)
+            .foregroundColor(.white)
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(10)
+            .padding()
+        }
+    }
+}
+
