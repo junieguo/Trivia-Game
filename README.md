@@ -19,53 +19,74 @@ This is an educational and fun quiz iOS app built with SwiftUI. The game challen
 
 ## Screens
 
-- **Welcome View**
-  - App title, brief instructions, high score display
-  - "Start Quiz" button navigates to GameView
-  - Info button opens a modal with gameplay instructions
+### Welcome View
 
-- **Game View**
-  - Shows one question at a time with an image and 4 answers
-  - Countdown timer and score display
-  - Tap answer to proceed or auto-advance on timeout
-  - Back-to-home button available
+- App title, brief instructions, and high score display  
+- "Start Quiz" button navigates to the Game View  
+- Info button opens a modal with gameplay instructions
 
-- **Game Over View**
-  - Final score summary
-  - New high score alert (if applicable)
-  - Options to restart the game or return home
+<p align="center">
+  <img src="ReadMe/HomeScreen.png" alt="Home Screen" width="30%" />
+  <img src="ReadMe/Instructions.png" alt="Instructions Screen" width="30%" />
+</p>
+
+---
+
+### Game View
+
+- One question at a time with image and 4 answer choices  
+- Countdown timer and live score tracking  
+- Auto-advances on timeout or tap  
+- "Back to Home" button available during gameplay
+
+<p align="center">
+  <img src="ReadMe/QuestionScreen.png" alt="Question Screen" width="30%" />
+  <img src="ReadMe/LowTime.png" alt="Low Time Warning" width="30%" />
+</p>
+
+---
+
+### Game Over View
+
+- Final score summary  
+- High score notification (if new record)  
+- Options to restart or return to home screen
+
+<p align="center">
+  <img src="ReadMe/GameOver.png" alt="Game Over Screen" width="30%" />
+</p>
 
 ---
 
 ## Architecture
 
 - **Models**
-  - `Question`: Represents a single trivia question with text, image, choices, and correct answer.
+  - `Question`: A single trivia item with text, image, choices, and the correct answer.
 
 - **ViewModels**
-  - `GameState`: Manages high score and navigation path using `NavigationStack`.
-  - `QuizViewModel`: Handles game logic, question flow, score, and timer.
+  - `GameState`: Manages high score and navigation using `NavigationStack`.
+  - `QuizViewModel`: Core game logic—question flow, timer, and scoring.
 
 - **Views**
   - `WelcomeView`, `GameView`, `GameOverView`, `InstructionsView`
 
 - **State Management**
-  - Uses `@StateObject`, `@EnvironmentObject`, and `@Published` for reactive data flow.
-  - Timer runs via `Timer.scheduledTimer` and stops/resets appropriately.
+  - Uses `@StateObject`, `@EnvironmentObject`, and `@Published`
+  - Timer runs via `Timer.scheduledTimer` and resets on question change or game reset
 
 ---
 
 ## How to Run
 
-1. Open `WorldCurrencyTrivia.xcodeproj` in **Xcode 15** on **macOS Ventura** or later.
-2. Build and run the app on a simulator or physical device (iOS 16+).
-3. Tap **Start Quiz** to begin.
-4. Answer questions before the 10-second timer ends.
-5. View your score, check if you beat your high score, and replay instantly.
+1. Open `WorldCurrencyTrivia.xcodeproj` in Xcode 15 on macOS Ventura or later.
+2. Build and run the app on a simulator or iOS 16+ device.
+3. Tap Start Quiz to begin.
+4. Answer each question before time runs out.
+5. Review your score and try to beat your high score!
 
 ---
 
 ## Notes
 
-- Data (high score) is stored in-memory for the session; not persisted between app launches.
-- Game reset clears all progress and starts a fresh session.
+- High scores are stored in memory only (session-based).
+- Game reset clears progress and starts fresh instantly.
